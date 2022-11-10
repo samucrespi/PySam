@@ -17,7 +17,7 @@ import PySam as PS
 ```
 
 **WARNING**: 
-At this stage, it is necessary to copy and paste this file to the specific folder where is needed. This method (that sill be changed in future updates) is extremaly version-sensitive. Please, always check if you are using the most updated version.
+At this stage, it is necessary to copy and paste this file to the specific folder where is needed. This method (that will be changed in future updates) is extremely version-sensitive. Please, always check if you are using the most updated version.
 
 ------
 
