@@ -134,3 +134,106 @@ def get_xfit(x, log=False, d=0.05, N=1000):
         return get_xfit(np.log10(x), d=d, N=N)
     else:
         return np.linspace(x1-d*(x2-x1),x2+d*(x2-x1),N)
+
+
+#######################################################################
+
+
+'''
+NAME:
+    binning (v1.1)
+    
+PURPOSE: 
+    To bin a set of data with errors. Each bin will contain the
+    weighted average of the data inside the bin.
+
+CALLING SEQUENCE: 
+    binning(filein, fileout, dt, t0=None, plot=False)
+
+PARAMETERS: 
+    filein  file, str
+            File ot name of the file containing the data in a
+            3-columns format (x-coordinate, y-coordinate, y-errors).
+    fileout file, str
+            File or name of the file where the binned data will be
+            stored.
+    dt      float
+            Required width of the bin (x-coordinate).
+    t0      float, optional
+            Left boundary of the first bin. The default, None, uses
+            the first time in the dataset as t0.
+    plot    bool, optional
+            If True, a plot with data and binned data is displayed.
+            Default is False.
+
+RETURN:
+
+OUTPUT:
+    fileout file containing the binned data
+
+NOTES:
+
+VERSIONS HISTORY:
+    v1.0: first release
+          (S.Crespi-Jul2018)
+    v1.1: added "type error" for dt and t0 
+          data are automatically sorted along the 0th column
+          wrong standard error of the weighted mean -> fixed
+          added possibility of plotting
+          minor improvements
+          (S.Crespi-Oct2022)
+    
+
+'''
+
+
+def binning(filein,fileout,dt,t0=None,plot=False):
+
+    from numpy import arange,power,loadtxt,asarray
+    
+    # Load data
+    data = loadtxt(filein, float)
+    data = data[data[:, 0].argsort()]
+    t, f, ferr = data[:,0], data[:,1], data[:,2]
+
+    # Type Errors
+    if t0==None: t0 = t[0]*1
+    elif type(t0)!=float and type(t0)!=int:
+        print("\n\n Type Error: t0 must be a number\n\n")
+        quit()
+    if type(dt)!=float and type(dt)!=int:
+        print("\n\n Type Error: t0 must be a number\n\n")
+        quit()
+    
+    # Bin and write out the file
+    Ts = arange(t0+dt/2.,t[-1]+dt/2.,dt)
+    k = 0
+    Nt = len(t)
+    file = open(fileout,'w+')
+    for T in Ts:
+        tobin = []
+        for j in range(k,Nt):
+            if t[j] >= T+dt/2.:
+                k = j*1
+                break
+            tobin.append([f[j],ferr[j]])
+        if tobin==[]: continue
+        tobin = asarray(tobin)
+
+        w2 = power(tobin[:,1],-2.)
+        y = sum(tobin[:,0]*w2)/sum(w2)
+        yerr = power(sum(w2),-0.5)
+        
+        file.write("{} {} {}\n".format(T,y,yerr))
+    file.close()
+
+    if plot:
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots(1,figsize=(12,8))
+        ax.errorbar(t,f,yerr=ferr,color='k',marker='.',alpha=0.5,zorder=0,ls='none')
+        binned = loadtxt(fileout)
+        ax.errorbar(binned[:,0],binned[:,1],yerr=binned[:,2],color='r',marker='.',alpha=1,zorder=1,ls='none')
+        plt.tight_layout()
+        plt.show()
+    
+    return
