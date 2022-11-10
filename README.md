@@ -29,6 +29,11 @@ At this stage, it is necessary to copy and paste this file to the specific folde
 
 ## List of all the Functions Available
 
-**PySam.resize_scatterplot<i>(s,s1=10,s2=100,log=False,extrema=[])</i>**
+**resize_scatterplot<i>(s, s1=10, s2=100, log=False, extrema=[])</i>**
+ - Rescale the size of a scatter plot points
+ 
+**get_colours_for_plot<i>(Ncolors, cmap='gist_rainbow')</i>**
+ - Generate a discrete color palette for plots
 
- Rescale the size of a scatter plot points
+**get_xfit<i>(x, log=False, d=0.05, N=1000)</i>**
+ - Generate an array that samples the x-coordinate
