@@ -1,7 +1,7 @@
 
 # PySam.py
 ### By S. Crespi, Sep 2021
-### Version 1.0
+#### Version 1.0
 
 The following is a collection of useful functions.
 To use them, simply copy this file where needed and add this line to your code:
@@ -37,3 +37,8 @@ At this stage, it is necessary to copy and paste this file to the specific folde
 
 **get_xfit<i>(x, log=False, d=0.05, N=1000)</i>**
  - Generate an array that samples the x-coordinate
+
+------
+## License
+
+Copyright 2021-2022 Samuele Crespi and contributors.
