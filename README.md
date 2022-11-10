@@ -38,6 +38,8 @@ At this stage, it is necessary to copy and paste this file to the specific folde
 **get_xfit<i>(x, log=False, d=0.05, N=1000)</i>**
  - Generate an array that samples the x-coordinate
 
+**binning<i>(filein,fileout,dt,t0=None,plot=False)</i>**
+
 ------
 ## License
 
